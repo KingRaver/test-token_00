@@ -1,79 +1,79 @@
 Initial Supply Structure (30% - 300M tokens):
-1. Public Distribution: 200M tokens ($2M value)
-- Batch Release Structure:
-  * Batch 1: 50M tokens (Week 1)
-  * Batch 2: 50M tokens (Week 6)
-  * Batch 3: 50M tokens (Week 12)
-  * Batch 4: 50M tokens (Week 18)
-- Per-wallet limits: 1M tokens ($10k) per batch
-- Time-lock: 30 days before governance rights activate
+ 1. Public Distribution: 200M tokens ($2M value)
+  - Batch Release Structure:
+   * Batch 1: 50M tokens (Week 1)
+   * Batch 2: 50M tokens (Week 6)
+   * Batch 3: 50M tokens (Week 12)
+   * Batch 4: 50M tokens (Week 18)
+  - Per-wallet limits: 1M tokens ($10k) per batch
+  - Time-lock: 30 days before governance rights activate
 
-2. Initial Liquidity: 60M tokens ($600k value)
-- Split across major DEXs
-- Paired with stablecoins
-- LP token time-lock: 12 months minimum
+ 2. Initial Liquidity: 60M tokens ($600k value)
+  - Split across major DEXs
+  - Paired with stablecoins
+  - LP token time-lock: 12 months minimum
 
-3. Governance Bootstrap: 40M tokens ($400k value)
-- Early participant incentives
-- Initial governance proposals
-- Community-driven initiatives
+ 3. Governance Bootstrap: 40M tokens ($400k value)
+  - Early participant incentives
+  - Initial governance proposals
+  - Community-driven initiatives
 
 Governance Threshold Tiers:
-1. Basic Voting Rights
-- Minimum: 10k tokens ($100)
-- Can participate in votes
-- Basic proposal comments
+ 1. Basic Voting Rights
+  - Minimum: 10k tokens ($100)
+  - Can participate in votes
+  - Basic proposal comments
 
-2. Enhanced Participation
-- 50k tokens ($500)
-- Can create governance polls
-- Committee participation rights
+ 2. Enhanced Participation
+  - 50k tokens ($500)
+  - Can create governance polls
+  - Committee participation rights
 
-3. Proposal Rights
-- 100k tokens ($1,000)
-- Can submit governance proposals
-- Committee creation rights
+ 3. Proposal Rights
+  - 100k tokens ($1,000)
+  - Can submit governance proposals
+  - Committee creation rights
 
-4. Advanced Rights
-- 500k tokens ($5,000)
-- Emergency proposal rights
-- Veto participation (requires additional criteria)
+ 4. Advanced Rights
+  - 500k tokens ($5,000)
+  - Emergency proposal rights
+  - Veto participation (requires additional criteria)
 
 Remaining 70% Distribution (700M tokens):
-1. Development Fund: 200M tokens
-- 5-year vesting
-- Quarterly unlocks
-- Governance oversight on usage
+ 1. Development Fund: 200M tokens
+  - 5-year vesting
+  - Quarterly unlocks
+  - Governance oversight on usage
 
-2. Community Treasury: 200M tokens
-- Controlled by governance
-- Used for ecosystem growth
-- Protocol improvements
+ 2. Community Treasury: 200M tokens
+  - Controlled by governance
+  - Used for ecosystem growth
+  - Protocol improvements
 
-3. Future Governance Incentives: 200M tokens
-- Participation rewards
-- Governance staking
-- Long-term voter incentives
+ 3. Future Governance Incentives: 200M tokens
+  - Participation rewards
+  - Governance staking
+  - Long-term voter incentives
 
-4. Strategic Reserve: 100M tokens
-- Partnerships
-- Emergency fund
-- Market stability
+ 4. Strategic Reserve: 100M tokens
+  - Partnerships
+  - Emergency fund
+  - Market stability
 
 Time-Based Power Scaling:
-1. Holding Period Multipliers
-- 3 months: 1.2x voting power
-- 6 months: 1.5x voting power
-- 12 months: 2x voting power
-- Cap at 2x to prevent centralization
+ 1. Holding Period Multipliers
+  - 3 months: 1.2x voting power
+  - 6 months: 1.5x voting power
+  - 12 months: 2x voting power
+  - Cap at 2x to prevent centralization
 
 Anti-Gaming Measures:
-1. Proposal Requirements
-- 30-day token holding period
-- Active participation in 5 previous votes
-- Stake during proposal period
+ 1. Proposal Requirements
+  - 30-day token holding period
+  - Active participation in 5 previous votes
+  - Stake during proposal period
 
-2. Voting Requirements
-- 14-day minimum holding before voting
-- No transfer during active votes
-- Snapshot mechanisms for vote counting
+ 2. Voting Requirements
+  - 14-day minimum holding before voting
+  - No transfer during active votes
+  - Snapshot mechanisms for vote counting
