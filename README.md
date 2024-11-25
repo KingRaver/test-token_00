@@ -3,6 +3,7 @@
 THEIA is an innovative ecological regeneration token designed to support and fund projects aimed at restoring and preserving vital ecosystems, particularly old-growth forests and their interconnected waterways. This initiative is complemented by Canopy Culture, our nonprofit arm dedicated to community engagement and education around ecological restoration.
 
    Our Vision
+   
 We envision a world where ancient forests thrive alongside healthy watersheds, fostering biodiversity and resilience. THEIA aims to facilitate this vision through financial mechanisms that empower conservation efforts and promote sustainable practices.
 
    Core Beliefs
