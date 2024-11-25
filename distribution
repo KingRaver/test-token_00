@@ -1,4 +1,5 @@
-Initial Supply Structure (30% - 300M tokens):
+Initial Supply Structure (30% - 300M tokens)
+
  1. Public Distribution: 200M tokens ($2M value)
   - Batch Release Structure:
    * Batch 1: 50M tokens (Week 1)
@@ -18,7 +19,8 @@ Initial Supply Structure (30% - 300M tokens):
   - Initial governance proposals
   - Community-driven initiatives
 
-Governance Threshold Tiers:
+Governance Threshold Tiers
+
  1. Basic Voting Rights
   - Minimum: 10k tokens ($100)
   - Can participate in votes
@@ -39,7 +41,8 @@ Governance Threshold Tiers:
   - Emergency proposal rights
   - Veto participation (requires additional criteria)
 
-Remaining 70% Distribution (700M tokens):
+Remaining 70% Distribution (700M tokens)
+
  1. Development Fund: 200M tokens
   - 5-year vesting
   - Quarterly unlocks
@@ -60,14 +63,16 @@ Remaining 70% Distribution (700M tokens):
   - Emergency fund
   - Market stability
 
-Time-Based Power Scaling:
+Time-Based Power Scaling
+
  1. Holding Period Multipliers
   - 3 months: 1.2x voting power
   - 6 months: 1.5x voting power
   - 12 months: 2x voting power
   - Cap at 2x to prevent centralization
 
-Anti-Gaming Measures:
+Anti-Gaming Measures
+
  1. Proposal Requirements
   - 30-day token holding period
   - Active participation in 5 previous votes
