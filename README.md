@@ -15,6 +15,12 @@ Your Invitation to Create
 
 Join us at this extraordinary confluence of epochs, where tradition and innovation merge into breathtaking new forms. Every contribution adds a unique voice to our collective symphony, each individual experience enriching our shared narrative. Here, art transcends the solitary act of creation; it becomes a chorus that celebrates our humanity in all its complexity.
 
-The future does not beckon with a cold hand; it embraces us warmly with endless possibilities. In this crucible of creativity, we forge ahead together, carrying forth the eternal flame of human expression.
+The future does not beckon with a cold hand; it embraces us warmly with endless possibilities. 
 
-Are you ready to embark on this adventure? If you feel inspired by our vision and wish to contribute your unique talents and ideas, we invite you to join us. Together, let’s ignite a revolution in creativity and explore the boundless horizons that await!
+In this crucible of creativity, we forge ahead together, carrying forth the eternal flame of human expression.
+
+Are you ready to embark on this adventure? 
+
+If you feel inspired by our vision and wish to contribute your unique talents and ideas, we invite you to join us. 
+
+Together, let’s ignite a revolution in creativity and explore the boundless horizons that await!
