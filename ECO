@@ -1,0 +1,190 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
+
+contract EcoGovernanceToken is ERC20, ERC20Permit, ERC20Votes, AccessControl {
+    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+    uint256 public constant INITIAL_SUPPLY = 1_000_000_000 * 10**18; // 1 billion tokens
+    uint256 public constant MINTABLE_SUPPLY = (INITIAL_SUPPLY * 30) / 100; // 30% mintable
+    uint256 public constant DISTRIBUTION_SUPPLY = (INITIAL_SUPPLY * 70) / 100; // 70% initial distribution
+    
+    uint256 public totalMinted = 0;
+    
+    // Struct to track locked tokens
+    struct TokenLock {
+        uint256 amount;
+        uint256 releaseTime;
+        uint256 releasedAmount;
+        bool exists;
+        uint256 vestingDuration;
+        uint256 vestingStart;
+        bool isVesting;
+    }
+    
+    // Mapping of address to their token locks
+    mapping(address => TokenLock[]) public tokenLocks;
+    
+    // Events
+    event TokensLocked(address indexed beneficiary, uint256 amount, uint256 releaseTime);
+    event TokensVested(address indexed beneficiary, uint256 amount, uint256 vestingDuration);
+    event TokensReleased(address indexed beneficiary, uint256 amount);
+    
+    constructor(address admin) 
+        ERC20("Eco Governance Token", "ECO") 
+        ERC20Permit("Eco Governance Token")
+    {
+        _grantRole(DEFAULT_ADMIN_ROLE, admin);
+        _grantRole(MINTER_ROLE, admin);
+        
+        // Mint initial distribution supply to admin
+        _mint(admin, DISTRIBUTION_SUPPLY);
+    }
+    
+    // Create a time lock for tokens
+    function createTokenLock(
+        address beneficiary, 
+        uint256 amount, 
+        uint256 releaseTime
+    ) public onlyRole(DEFAULT_ADMIN_ROLE) {
+        require(releaseTime > block.timestamp, "Release time must be in future");
+        require(amount > 0, "Amount must be greater than 0");
+        
+        // Transfer tokens from sender to contract
+        _transfer(msg.sender, address(this), amount);
+        
+        // Create new lock
+        tokenLocks[beneficiary].push(TokenLock({
+            amount: amount,
+            releaseTime: releaseTime,
+            releasedAmount: 0,
+            exists: true,
+            vestingDuration: 0,
+            vestingStart: 0,
+            isVesting: false
+        }));
+        
+        emit TokensLocked(beneficiary, amount, releaseTime);
+    }
+    
+    // Create a vesting schedule
+    function createVestingSchedule(
+        address beneficiary,
+        uint256 amount,
+        uint256 vestingDuration
+    ) public onlyRole(DEFAULT_ADMIN_ROLE) {
+        require(vestingDuration > 0, "Vesting duration must be greater than 0");
+        require(amount > 0, "Amount must be greater than 0");
+        
+        // Transfer tokens from sender to contract
+        _transfer(msg.sender, address(this), amount);
+        
+        // Create new vesting schedule
+        tokenLocks[beneficiary].push(TokenLock({
+            amount: amount,
+            releaseTime: block.timestamp + vestingDuration,
+            releasedAmount: 0,
+            exists: true,
+            vestingDuration: vestingDuration,
+            vestingStart: block.timestamp,
+            isVesting: true
+        }));
+        
+        emit TokensVested(beneficiary, amount, vestingDuration);
+    }
+    
+    // Release available tokens from all locks for msg.sender
+    function releaseAvailableTokens() public {
+        TokenLock[] storage locks = tokenLocks[msg.sender];
+        uint256 totalToRelease = 0;
+        
+        for (uint256 i = 0; i < locks.length; i++) {
+            if (locks[i].exists) {
+                uint256 availableAmount = getAvailableAmount(msg.sender, i);
+                if (availableAmount > 0) {
+                    locks[i].releasedAmount += availableAmount;
+                    totalToRelease += availableAmount;
+                }
+            }
+        }
+        
+        require(totalToRelease > 0, "No tokens available for release");
+        _transfer(address(this), msg.sender, totalToRelease);
+        emit TokensReleased(msg.sender, totalToRelease);
+    }
+    
+    // Calculate available amount for a specific lock
+    function getAvailableAmount(address beneficiary, uint256 lockIndex) public view returns (uint256) {
+        TokenLock storage lock = tokenLocks[beneficiary][lockIndex];
+        if (!lock.exists) return 0;
+        
+        if (lock.isVesting) {
+            if (block.timestamp < lock.vestingStart) return 0;
+            if (block.timestamp >= lock.releaseTime) {
+                return lock.amount - lock.releasedAmount;
+            }
+            
+            uint256 timeElapsed = block.timestamp - lock.vestingStart;
+            uint256 totalVestingAmount = (lock.amount * timeElapsed) / lock.vestingDuration;
+            return totalVestingAmount - lock.releasedAmount;
+        } else {
+            if (block.timestamp < lock.releaseTime) return 0;
+            return lock.amount - lock.releasedAmount;
+        }
+    }
+    
+    // View function to get all locks for an address
+    function getTokenLocks(address beneficiary) public view returns (
+        uint256[] memory amounts,
+        uint256[] memory releaseTimes,
+        uint256[] memory releasedAmounts,
+        bool[] memory isVesting
+    ) {
+        TokenLock[] storage locks = tokenLocks[beneficiary];
+        amounts = new uint256[](locks.length);
+        releaseTimes = new uint256[](locks.length);
+        releasedAmounts = new uint256[](locks.length);
+        isVesting = new bool[](locks.length);
+        
+        for (uint256 i = 0; i < locks.length; i++) {
+            amounts[i] = locks[i].amount;
+            releaseTimes[i] = locks[i].releaseTime;
+            releasedAmounts[i] = locks[i].releasedAmount;
+            isVesting[i] = locks[i].isVesting;
+        }
+        
+        return (amounts, releaseTimes, releasedAmounts, isVesting);
+    }
+    
+    // Minting function for rewards and community empowerment
+    function mint(address to, uint256 amount) public onlyRole(MINTER_ROLE) {
+        require(totalMinted + amount <= MINTABLE_SUPPLY, "Exceeds mintable supply");
+        totalMinted += amount;
+        _mint(to, amount);
+    }
+    
+    // Required overrides
+    function _afterTokenTransfer(address from, address to, uint256 amount)
+        internal
+        override(ERC20, ERC20Votes)
+    {
+        super._afterTokenTransfer(from, to, amount);
+    }
+
+    function _mint(address to, uint256 amount)
+        internal
+        override(ERC20, ERC20Votes)
+    {
+        super._mint(to, amount);
+    }
+
+    function _burn(address account, uint256 amount)
+        internal
+        override(ERC20, ERC20Votes)
+    {
+        super._burn(account, amount);
+    }
+}
