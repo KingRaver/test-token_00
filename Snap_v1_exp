@@ -1,0 +1,25 @@
+I've created a comprehensive Snapshot voting implementation that incorporates GTC, GIV, and TREE tokens. Here are the key features of this implementation:
+
+1. Token Integration
+- Supports all three governance tokens (GTC, GIV, and TREE)
+- Calculates total voting power by combining balances from all tokens
+- Displays individual token balances and total voting power
+
+2. Voting Mechanism
+- Token-weighted voting system where voting power scales with token holdings
+- Three voting options: For, Against, and Abstain
+- Single-choice voting to prevent double voting
+- Real-time vote tracking and display
+
+3. User Interface
+- Clean, professional design using shadcn/ui components
+- Wallet connection interface
+- Clear display of voting power and token balances
+- Real-time vote results visualization
+- Proposal status and deadline tracking
+
+4. Security Features
+- Wallet connection requirement before voting
+- Vote recording to prevent multiple votes
+- Transaction state management
+- Clear feedback on vote status
