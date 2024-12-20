@@ -1,0 +1,179 @@
+import React, { useState, useEffect } from 'react';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { WalletIcon, CheckCircle, XCircle } from 'lucide-react';
+
+const SnapshotVoting = () => {
+  const [connectedWallet, setConnectedWallet] = useState(null);
+  const [votingPower, setVotingPower] = useState({
+    GTC: 0,
+    GIV: 0,
+    TREE: 0
+  });
+  const [proposals, setProposals] = useState([
+    {
+      id: 1,
+      title: "Community Fund Allocation Q1 2025",
+      description: "Proposal to allocate funds for community initiatives in Q1 2025",
+      votes: {
+        for: 0,
+        against: 0,
+        abstain: 0
+      },
+      status: "active",
+      endTime: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
+    }
+  ]);
+  const [userVotes, setUserVotes] = useState({});
+
+  const mockTokenBalances = {
+    "0x742d35Cc6634C0532925a3b844Bc454e4438f44e": {
+      GTC: 1000,
+      GIV: 500,
+      TREE: 2000
+    }
+  };
+
+  const connectWallet = () => {
+    // Mock wallet connection
+    const mockAddress = "0x742d35Cc6634C0532925a3b844Bc454e4438f44e";
+    setConnectedWallet(mockAddress);
+    setVotingPower(mockTokenBalances[mockAddress]);
+  };
+
+  const calculateTotalVotingPower = () => {
+    return Object.values(votingPower).reduce((acc, val) => acc + val, 0);
+  };
+
+  const castVote = (proposalId, voteType) => {
+    const totalPower = calculateTotalVotingPower();
+    
+    setProposals(proposals.map(proposal => {
+      if (proposal.id === proposalId) {
+        const updatedVotes = { ...proposal.votes };
+        updatedVotes[voteType] += totalPower;
+        return { ...proposal, votes: updatedVotes };
+      }
+      return proposal;
+    }));
+
+    setUserVotes({
+      ...userVotes,
+      [proposalId]: voteType
+    });
+  };
+
+  const formatNumber = (num) => {
+    return new Intl.NumberFormat().format(num);
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto p-4">
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle className="flex justify-between items-center">
+            <span>Snapshot Voting Dashboard</span>
+            {connectedWallet ? (
+              <div className="flex items-center text-sm">
+                <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+                Connected: {`${connectedWallet.slice(0, 6)}...${connectedWallet.slice(-4)}`}
+              </div>
+            ) : (
+              <Button onClick={connectWallet} className="flex items-center">
+                <WalletIcon className="w-4 h-4 mr-2" />
+                Connect Wallet
+              </Button>
+            )}
+          </CardTitle>
+        </CardHeader>
+        
+        {connectedWallet && (
+          <CardContent>
+            <div className="grid grid-cols-3 gap-4 mb-6">
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <div className="text-sm text-gray-600">GTC Balance</div>
+                <div className="text-xl font-semibold">{formatNumber(votingPower.GTC)}</div>
+              </div>
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <div className="text-sm text-gray-600">GIV Balance</div>
+                <div className="text-xl font-semibold">{formatNumber(votingPower.GIV)}</div>
+              </div>
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <div className="text-sm text-gray-600">TREE Balance</div>
+                <div className="text-xl font-semibold">{formatNumber(votingPower.TREE)}</div>
+              </div>
+            </div>
+            
+            <div className="text-sm text-gray-600 mb-2">Total Voting Power</div>
+            <div className="text-2xl font-semibold mb-6">{formatNumber(calculateTotalVotingPower())}</div>
+          </CardContent>
+        )}
+      </Card>
+
+      {proposals.map(proposal => (
+        <Card key={proposal.id} className="mb-4">
+          <CardHeader>
+            <CardTitle>{proposal.title}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="mb-4 text-gray-600">{proposal.description}</p>
+            
+            <div className="grid grid-cols-3 gap-4 mb-6">
+              <div className="p-4 bg-green-50 rounded-lg">
+                <div className="text-sm text-gray-600">For</div>
+                <div className="text-xl font-semibold">{formatNumber(proposal.votes.for)}</div>
+              </div>
+              <div className="p-4 bg-red-50 rounded-lg">
+                <div className="text-sm text-gray-600">Against</div>
+                <div className="text-xl font-semibold">{formatNumber(proposal.votes.against)}</div>
+              </div>
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <div className="text-sm text-gray-600">Abstain</div>
+                <div className="text-xl font-semibold">{formatNumber(proposal.votes.abstain)}</div>
+              </div>
+            </div>
+
+            {connectedWallet && !userVotes[proposal.id] && (
+              <div className="flex gap-4">
+                <Button 
+                  onClick={() => castVote(proposal.id, 'for')}
+                  className="flex-1 bg-green-500 hover:bg-green-600"
+                >
+                  Vote For
+                </Button>
+                <Button 
+                  onClick={() => castVote(proposal.id, 'against')}
+                  className="flex-1 bg-red-500 hover:bg-red-600"
+                >
+                  Vote Against
+                </Button>
+                <Button 
+                  onClick={() => castVote(proposal.id, 'abstain')}
+                  className="flex-1"
+                >
+                  Abstain
+                </Button>
+              </div>
+            )}
+
+            {userVotes[proposal.id] && (
+              <Alert>
+                <AlertDescription className="flex items-center">
+                  <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+                  You voted "{userVotes[proposal.id]}" on this proposal
+                </AlertDescription>
+              </Alert>
+            )}
+
+            <div className="mt-4 text-sm text-gray-500">
+              Ends: {proposal.endTime.toLocaleDateString()}
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+};
+
+export default SnapshotVoting;
